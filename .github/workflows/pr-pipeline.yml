@@ -9,6 +9,10 @@ jobs:
   test:
     runs-on: ubuntu-latest
 
+    strategy:
+      matrix:
+        python-version: ['3.13', '3.12', '3.11', '3.10', '3.9']  # Match the Python versions in tox.ini
+
     steps:
       # Step 1: Checkout code
       - name: Checkout code
@@ -18,7 +22,7 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@v4
         with:
-          python-version: '3.12'  
+          python-version: ${{ matrix.python-version }}  # Dynamically use the version from the matrix
 
       # Step 3: Install dependencies
       - name: Install dependencies
@@ -30,4 +34,3 @@ jobs:
       - name: Run tests
         run: |
           pytest  # Assuming Flask uses pytest for testing (common in Flask apps)
-
